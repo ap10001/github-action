@@ -12,15 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
+      - name: 签出代码
         uses: actions/checkout@v2
 
-      - name: Tailscale Action
+      - name: Tailscale 动作
         uses: ./
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: check for hello.ipn.dev in netmap
+      - name: 在网络地图中检查
         run:
           tailscale status | grep -q hello
 
