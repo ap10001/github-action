@@ -15,7 +15,7 @@ jobs:
       - name: 签出代码
         uses: actions/checkout@v2
 
-      - name: Tailscale 动作
+      - name: Tailscale 动作 =>
         uses: ./
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
