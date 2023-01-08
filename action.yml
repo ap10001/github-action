@@ -66,4 +66,5 @@ runs:
             HOSTNAME="github-$(cat /etc/hostname)"
           fi
           # sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
-          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname=${HOSTNAME}
+          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname=github-wokao
+          
