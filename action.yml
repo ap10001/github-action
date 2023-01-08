@@ -1,43 +1,43 @@
 # Copyright (c) 2021 Tailscale Inc & AUTHORS All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
-name: 'Connect Tailscale'
-description: 'Connect your GitHub Action workflow to Tailscale'
+name: '连接 Tailscale'
+description: '将您的 GitHub Action 工作流连接到 Tailscale'
 branding:
   icon: 'arrow-right-circle'
   color: 'gray-dark'
 inputs:
   authkey:
-    description: 'Your Tailscale authentication key, from the admin panel.'
+    description: '您的 Tailscale 身份验证密钥来自管理面板'
     required: true
   version:
-    description: 'Tailscale version to use.'
+    description: '要使用的 Tailscale 版本'
     required: true
-    default: '1.32.1'
+    default: '1.34.2'
   args:
-    description: 'Optional additional arguments to `tailscale up`'
+    description: 'tailscale up 的可选附加参数'
     required: false
     default: ''
   hostname:
-    description: 'Fixed hostname to use.'
+    description: '要使用的固定主机名'
     required: false
     default: ''
 runs:
     using: 'composite'
     steps:
-      - name: Check Runner OS
+      - name: 检查 Runner OS
         if: ${{ runner.os != 'Linux' }}
         shell: bash
         run: |
           echo "::error title=⛔ error hint::Support Linux Only"
           exit 1
-      - name: Check Auth Key Empty
+      - name: 检查 Auth Key 是否为空
         if: ${{ inputs.authkey == '' }}
         shell: bash
         run: |
           echo "::error title=⛔ error hint::Auth key empty, Maybe you need to populate it in the Secrets for your workflow, see more in https://docs.github.com/en/actions/security-guides/encrypted-secrets"
           exit 1
-      - name: Download Tailscale
+      - name: 下载 Tailscale
         shell: bash
         id: download
         env:
@@ -54,7 +54,7 @@ runs:
           rm tailscale.tgz
           TSPATH=/tmp/tailscale_${VERSION}_amd64
           sudo mv "${TSPATH}/tailscale" "${TSPATH}/tailscaled" /usr/bin
-      - name: Run Tailscale
+      - name: 运行 Tailscale
         shell: bash
         env:
           TAILSCALE_AUTHKEY: ${{ inputs.authkey }}
@@ -65,4 +65,5 @@ runs:
           if [ -z "${HOSTNAME}" ]; then
             HOSTNAME="github-$(cat /etc/hostname)"
           fi
-          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
+          # sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname=${HOSTNAME} --accept-routes ${ADDITIONAL_ARGS}
+          sudo tailscale up --authkey ${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname=${HOSTNAME}
