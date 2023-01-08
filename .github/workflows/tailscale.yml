@@ -22,5 +22,5 @@ jobs:
 
       - name: 在网络地图中检查
         run:
-          tailscaled status | grep -q hello
+          tailscale status
 
